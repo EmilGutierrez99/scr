@@ -55,6 +55,50 @@ netplan apply
 echo "Limpiando archivos temporales del sistema..."
 find /tmp -type f -delete
 
+
+#Aqui poner reinstalacion de php,apache,mysql#!/bin/bash
+
+echo "Iniciando la desinstalación de Apache, PHP y MySQL de forma desatendida..."
+
+# Desinstalar Apache
+echo "Desinstalando Apache..."
+apt-get remove --purge apache2 apache2-utils apache2-bin apache2.2-common -y
+
+# Eliminar archivos de configuración de Apache
+echo "Eliminando archivos de configuración de Apache..."
+rm -rf /etc/apache2
+rm -rf /var/www/html
+
+# Desinstalar PHP
+echo "Desinstalando PHP..."
+apt-get remove --purge php* -y
+
+# Eliminar archivos de configuración de PHP
+echo "Eliminando archivos de configuración de PHP..."
+rm -rf /etc/php
+
+# Desinstalar MySQL
+echo "Desinstalando MySQL..."
+apt-get remove --purge mysql-server mysql-client mysql-common -y
+
+# Eliminar archivos de configuración y datos de MySQL
+echo "Eliminando archivos de configuración y datos de MySQL..."
+rm -rf /etc/mysql
+rm -rf /var/lib/mysql
+rm -rf /var/log/mysql
+
+# Limpiar paquetes no utilizados y caché
+echo "Limpiando paquetes no utilizados y caché..."
+apt-get autoremove -y
+apt-get autoclean -y
+
+# Verificación final
+echo "Desinstalación completa. Apache, PHP y MySQL han sido eliminados del sistema de forma desatendida."
+
+# Fin del script
+
+#Fin reinstall
+
 # Reiniciar el sistema automáticamente
 echo "El sistema se reiniciará automáticamente en 10 segundos..."
 sleep 10
