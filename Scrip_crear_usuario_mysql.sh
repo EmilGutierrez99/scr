@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Variables
-DB_NAME="DB_003"
-DB_USER="USER_003"
-DB_PASS="PASSWORD_003"
+DB_NAME="DB_004"
+DB_USER="USER_004"
+DB_PASS="PASSWORD_004"
 ROOT_USER="root"
 ROOT_PASS="password"
-TABLE_NAME="TABLE_002"
+TABLE_NAME="TABLE_003"
 
 
 # Crear base de datos
