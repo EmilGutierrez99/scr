@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-DB_NAME="DB_003"
+DB_NAME="DB_004"
 DB_USER="USER_003"
 DB_PASS="PASSWORD_003"
 ROOT_USER="root"
