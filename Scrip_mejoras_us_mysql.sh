@@ -44,12 +44,15 @@ if [ "$user_exists" ]; then
 fi
 
 # Verificar si la tabla ya existe
+#####
+
 table_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; SHOW TABLES LIKE '$TABLE_NAME';" | grep "$TABLE_NAME")
 if [ "$table_exists" ]; then
   echo "Advertencia: La tabla $TABLE_NAME ya existe en la base de datos $DB_NAME. Por favor, elige otro nombre."
   exit 1
 fi
 
+###
 # Crear base de datos
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
 
