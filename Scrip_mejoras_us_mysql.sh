@@ -3,7 +3,7 @@
 # Variables
 read -p "Introduce el nombre de la DB: " DB_NAME
 read -p "Introduce el nombre del nuevo USER: " DB_USER
-read -p "Introduce el Password del nuevo : " USER_PASS
+read -p "Introduce el Password del nuevo USER: " USER_PASS
 read -p "Introduce el nombre de la nueva Tabla: " TABLE_NAME
 ROOT_USER="root"
 ROOT_PASS="password"
@@ -40,7 +40,7 @@ fi
 user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
 if [ "$user_exists" ]; then
   echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
-  exit 1
+  read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
 fi
 
 # Verificar si la tabla ya existe
