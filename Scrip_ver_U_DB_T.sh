@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # Variables
-DB_NAME="DB_004"
-DB_USER="USER_003"
-DB_PASS="PASSWORD_003"
+read -p "Introduce el nombre de la DB a revisar: " DB_NAME
 ROOT_USER="root"
 ROOT_PASS="password"
-TABLE_NAME="TABLE_002"
+
 
 #####
 echo "Listado de usuarios MySQL:"
