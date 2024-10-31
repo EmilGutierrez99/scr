@@ -60,12 +60,14 @@ validate_allowed_chars() {
 
 # 4. Uso de argumentos en el script.
 #    Permitir que el script se ejecute con parámetros en la línea de comandos.
-
+if [ $# -eq 4 ]; then
   DB_NAME="$1"
   DB_USER="$2"
   USER_PASS="$3"
   TABLE_NAME="$4"
-
+else
+  echo "Parametros Completados"
+fi
 
 # 5. Trazas (logs) de acciones y resultados en el script.
 log() {
