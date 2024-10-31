@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables
-read -p "Introduce el nombre de la DB: " DB_NAME
-read -p "Introduce el nombre del nuevo USER: " DB_USER
-read -p "Introduce el Password del nuevo USER: " USER_PASS
-read -p "Introduce el nombre de la nueva Tabla: " TABLE_NAME
+read -p "Ingresa el nombre de la DB Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " DB_NAME
+read -p "Ingresa el nombre del nuevo USER Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " DB_USER
+read -p "Ingresa el Password del nuevo USER Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " USER_PASS
+read -p "Ingresa el nombre de la nueva Tabla Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " TABLE_NAME
 ROOT_USER="root"
 ROOT_PASS="password"
 
@@ -96,13 +96,6 @@ mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
 
 # Verificar si el usuario puede crear una tabla
 mysql -u $DB_USER -p"$USER_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(64));"
-
-# Comprobación final
-if [ $? -eq 0 ]; then
-  echo "El usuario $DB_USER ha creado la tabla $TABLE_NAME correctamente en la base de datos $DB_NAME."
-else
-  echo "Hubo un error al intentar crear la tabla con el usuario $DB_USER."
-fi
 
 ######
 #6. Control de errores mejorado
