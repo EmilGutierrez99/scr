@@ -40,8 +40,8 @@ validate_length_regex() {
   local input="$1"
   if [[ ! "$input" =~ ^.{8,64}$ ]]; then
     echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres)."
-     read -p "INTRODUCE OTRA VEZ: " input
-    exit 1
+    read -p "INTRODUCE OTRA VEZ: " input
+    
   fi
 }
 
@@ -54,7 +54,7 @@ validate_allowed_chars() {
     echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
     echo "Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_)."
     read -p "INTRODUCE OTRA VEZ: " input
-    exit 1
+    
   fi
 }
 
