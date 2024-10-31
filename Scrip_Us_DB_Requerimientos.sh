@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables
-read -p "Ingresa el nombre de la DB Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " DB_NAME
-read -p "Ingresa el nombre del nuevo USER Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " DB_USER
-read -p "Ingresa el Password del nuevo USER Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " USER_PASS
-read -p "Ingresa el nombre de la nueva Tabla Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_).: " TABLE_NAME
+read -p "Ingresa el nombre de la DB Caracteres válidos:(a-z),(A-Z),(0-9),(_): " DB_NAME
+read -p "Ingresa el nombre del nuevo USER Caracteres válidos:(a-z),(A-Z),(0-9),(_): " DB_USER
+read -p "Ingresa el Password del nuevo USER Caracteres válidos:(a-z),(A-Z),(0-9),(_): " USER_PASS
+read -p "Ingresa el nombre de la nueva Tabla Caracteres válidos:(a-z),(A-Z),(0-9),(_): " TABLE_NAME
 ROOT_USER="root"
 ROOT_PASS="password"
 
@@ -60,14 +60,12 @@ validate_allowed_chars() {
 
 # 4. Uso de argumentos en el script.
 #    Permitir que el script se ejecute con parámetros en la línea de comandos.
-if [ $# -eq 4 ]; then
+
   DB_NAME="$1"
   DB_USER="$2"
   USER_PASS="$3"
   TABLE_NAME="$4"
-else
-  echo "No se pasaron todos los argumentos. Por favor, ejecuta el script de nuevo e ingresa los valores necesarios."
-fi
+
 
 # 5. Trazas (logs) de acciones y resultados en el script.
 log() {
