@@ -23,13 +23,13 @@ echo "Contraseña de la base de datos: $DB_PASSWORD"
 
 # Crear la base de datos
 echo "Creando la base de datos..."
-mysql -u root -p -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
 
 # Crear el usuario y asignarle permisos
 echo "Creando usuario y asignando permisos..."
-mysql -u $ROOT_USER -p $ROOT_PASS -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
-mysql -u $ROOT_USER -p $ROOT_PASS -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-mysql -u $ROOT_USER -p $ROOT_PASS -e "FLUSH PRIVILEGES;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
 
 # Confirmación de finalización
 echo "La configuración de la base de datos ha finalizado exitosamente."
