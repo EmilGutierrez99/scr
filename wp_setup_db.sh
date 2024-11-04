@@ -95,7 +95,6 @@ echo "Base de datos final: $DB_NAME"
 echo "Usuario final: $DB_USER"
 echo "Tabla final: $DB_TABLE"
 
-
 # Confirmación de finalización
 echo "La configuración de la base de datos ha finalizado exitosamente."
 echo "Puedes continuar con la instalación de WordPress."
