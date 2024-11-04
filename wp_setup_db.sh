@@ -16,6 +16,23 @@ DB_TABLE=$4
 ROOT_USER="root"
 ROOT_PASS="password"
 
+### Verificar si la base de datos ya existe
+db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
+if [ "$db_exists" ]; then
+  echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
+fi
+
+### Verificar si el usuario ya existe
+user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
+if [ "$user_exists" ]; then
+  echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
+fi
+
+
+
+
 # Mensaje de confirmación de inicio
 echo "Iniciando configuración de la base de datos de WordPress..."
 echo "Nombre de la base de datos: $DB_NAME"
@@ -33,7 +50,14 @@ mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER '$DB_USER'@'localhost' IDENTI
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
 
-# Verificar si el usuario puede crear una tabla
+
+### Verificar si la tabla ya existe
+table_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; SHOW TABLES LIKE '$DB_TABLE';" | grep "$DB_TABLE")
+if [ "$table_exists" ]; then
+  echo "Advertencia: La tabla $DB_TABLE ya existe en la base de datos $DB_NAME. Por favor, elige otro nombre."
+  exit 1
+fi
+# Crear tabla en la base de datos
 mysql -u $DB_USER -p"$DB_PASSWORD" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $DB_TABLE (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 
 
