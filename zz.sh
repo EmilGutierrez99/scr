@@ -1,5 +1,6 @@
 #!/bin/bash
 
+####---LOG--CREACIÓN---####
 # Definir la ruta absoluta del archivo de log
 LOG_FILE="/home/user/registro.log"
 # Verificar si el archivo existe en la ruta especificada
@@ -10,10 +11,11 @@ fi
 # Crear un nuevo archivo de log y otorgar permisos de escritura
 touch "$LOG_FILE"  # Crea el archivo si no existe o después de eliminar el anterior
 chmod 644 "$LOG_FILE"  # Otorga permisos de lectura y escritura
-
 # Mensaje de confirmación
 echo "Archivo de log preparado en $LOG_FILE."
+####---LOG--CREACIÓN--FIN---####
 
+####---FUNCIONES---####
 log_Regis() {
   local function_name="$1"
   local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
@@ -78,6 +80,7 @@ validar_longitud_y_caracteres() {
     echo "$input"  # Retornar el input válido
   fi
 }
+####---FUNCIONES--FIN--####
 
 # Verificar que se han pasado los cuatro argumentos necesarios
 if [ "$#" -ne 4 ]; then
@@ -101,6 +104,7 @@ fi
 ROOT_USER="root"
 ROOT_PASS="password"
 
+####---USO--DE--FUNCIONES---####
 # Validación y ajuste de los valores de entrada
 DB_NAME=$(verificar_DB "$DB_NAME")
 DB_USER=$(verificar_Usuario "$DB_USER")
@@ -110,6 +114,7 @@ DB_NAME=$(validar_longitud_y_caracteres "$DB_NAME")
 DB_USER=$(validar_longitud_y_caracteres "$DB_USER")
 USER_PASS=$(validar_longitud_y_caracteres "$USER_PASS")
 TABLE_NAME=$(validar_longitud_y_caracteres "$TABLE_NAME")
+####---USO--DE--FUNCIONES--FIN--####
 
 # Creación de base de datos, usuario y tabla
 echo "Iniciando configuración de la base de datos de WordPress..."
