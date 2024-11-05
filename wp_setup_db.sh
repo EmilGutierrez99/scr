@@ -135,6 +135,22 @@ echo "Nombre de la base de datos validado: $DB_NAME"
 echo "Nombre de usuario validado: $DB_USER"
 echo "Contraseña validada: $DB_PASSWORD"
 echo "Nombre de la tabla validado: $DB_TABLE"
+
+####---USO--DE--FUNCIONES---####
+# Llamar a las funciones para verificar y obtener los nombres finales
+DB_NAME=$(verificar_DB "$DB_NAME")
+DB_USER=$(verificar_Usuario "$DB_USER")
+DB_TABLE=$(verificar_Tabla "$DB_NAME" "$DB_TABLE")
+
+DB_NAME=$(validar_longitud_regex "$DB_NAME")
+DB_USER=$(validar_longitud_regex "$DB_USER")
+DB_PASSWORD=$(validar_longitud_regex "$DB_PASSWORD")
+DB_TABLE=$(validar_longitud_regex "$DB_TABLE")
+
+DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+DB_USER=$(validar_caracteres_regex "$DB_USER")
+DB_PASSWORD=$(validar_caracteres_regex "$DB_PASSWORD")
+DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
 ####---USO--DE--FUNCIONES--FIN--####
 
 echo "Base de datos final: $DB_NAME"
