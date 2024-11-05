@@ -47,6 +47,7 @@ mysql -u $DB_USER -p"$DB_PASSWORD" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS 
 ####---FUNCIONES---####
 ## Función para verificar si la base de datos ya existe
 verificar_DB() {
+  log_Regis "verificar_DB"
   local DB_NAME=$1
   local db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
 
@@ -62,6 +63,7 @@ verificar_DB() {
 
 ## Función para verificar si el usuario ya existe
 verificar_Usuario() {
+  log_Regis "verificar_Usuario"
   local DB_USER=$1
   local user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
 
@@ -77,6 +79,7 @@ verificar_Usuario() {
 
 ## Función para verificar si la tabla ya existe
 verificar_Tabla() {
+  log_Regis "verificar_Tabla"
   local DB_NAME=$1
   local DB_TABLE=$2
   local table_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; SHOW TABLES LIKE '$DB_TABLE';" | grep "$DB_TABLE")
@@ -93,6 +96,7 @@ verificar_Tabla() {
 
 ## Función para validar que la longitud esté en el rango de 8 a 64 caracteres
 validar_longitud_regex() {
+  log_Regis "validar_longitud_regex"
   local input="$1"
   # si la cadena input NO coincide con ^.{8,64} (logitud de caracteres) se ejecuta el then 
   if [[ ! "$input" =~ ^.{8,64}$ ]]; then
@@ -106,6 +110,7 @@ validar_longitud_regex() {
 
 ## Función para validar caracteres permitidos: solo letras, números y guión bajo (_)
 validar_caracteres_regex() {
+  log_Regis "validar_caracteres_regex"
   local input="$1"
   local allowed_chars_regex='^[a-zA-Z0-9_]+$'
   # si la cadena input NO coincide con allowed chars se ejecuta el then 
@@ -118,6 +123,13 @@ validar_caracteres_regex() {
     echo "$input"  # Retornar el input válido
   fi
 }
+#Registro usando log
+log_Regis() {
+  local function_name="$1"
+  local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
+  echo "$timestamp - Función utilizada: $function_name" >> registro.log
+}
+
 ####---FUNCIONES--FIN--####
 
 ####---USO--DE--FUNCIONES---####
@@ -135,6 +147,7 @@ DB_NAME=$(validar_caracteres_regex "$DB_NAME")
 DB_USER=$(validar_caracteres_regex "$DB_USER")
 DB_PASSWORD=$(validar_caracteres_regex "$DB_PASSWORD")
 DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
+####---USO--DE--FUNCIONES--FIN--####
 
 # Muestra los valores validados
 echo "Nombre de la base de datos validado: $DB_NAME"
