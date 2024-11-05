@@ -40,10 +40,10 @@ DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
 
 # Mensaje de confirmación de inicio
 echo "Iniciando configuración de la base de datos de WordPress..."
-echo "Nombre de la base de datos: $DB_NAME"
-echo "Usuario de la base de datos: $DB_USER"
-echo "Contraseña de la base de datos: $DB_PASSWORD"
-echo "Nombre de la tabla $DB_TABLE en la base de datos: $DB_NAME"
+echo "Nombre de la base de datos: "$DB_NAME""
+echo "Usuario de la base de datos: "$DB_USER""
+echo "Contraseña de la base de datos: "$DB_PASSWORD""
+echo "Nombre de la tabla "$DB_TABLE" en la base de datos: "$DB_NAME""
 
 # Crear la base de datos
 echo "Creando la base de datos..."
@@ -147,15 +147,15 @@ log_Regis() {
 ####---FUNCIONES--FIN--####
 
 # Muestra los valores validados
-echo "Nombre de la base de datos validado: $DB_NAME"
-echo "Nombre de usuario validado: $DB_USER"
-echo "Contraseña validada: $DB_PASSWORD"
-echo "Nombre de la tabla validado: $DB_TABLE"
+echo "Nombre de la base de datos validado: "$DB_NAME""
+echo "Nombre de usuario validado: "$DB_USER""
+echo "Contraseña validada: "$DB_PASSWORD""
+echo "Nombre de la tabla validado: "$DB_TABLE""
 ####---USO--DE--FUNCIONES--FIN--####
 
-echo "Base de datos final: $DB_NAME"
-echo "Usuario final: $DB_USER"
-echo "Tabla final: $DB_TABLE"
+echo "Base de datos final: "$DB_NAME""
+echo "Usuario final: "$DB_USER""
+echo "Tabla final: "$DB_TABLE""
 
 # Confirmación de finalización
 echo "La configuración de la base de datos ha finalizado exitosamente."
