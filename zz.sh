@@ -10,9 +10,6 @@ if [ "$#" -ne 4 ]; then
     read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
 else
 
-fi
-
-
 ###----VARIABLES---###
 # Asignar los argumentos a variables
 DB_NAME=$1
@@ -164,4 +161,9 @@ echo "Tabla final: "$DB_TABLE""
 # Confirmación de finalización
 echo "La configuración de la base de datos ha finalizado exitosamente."
 echo "Puedes continuar con la instalación de WordPress."
+
+
+fi
+
+
 
