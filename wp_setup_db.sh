@@ -1,48 +1,28 @@
 #!/bin/bash
 
-# Verificar que se han pasado los tres argumentos necesarios
-if [ "$#" -ne 4 ]; then
-    echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
-    
-    read -p "Ingresa el nombre de la DB (a-z, A-Z, 0-9, _): " DB_NAME
-    read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
-    read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
-    read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
+####---LOG--CREACIÓN---####
+# Definir la ruta absoluta del archivo de log
+LOG_FILE="/home/user/registro.log"
+# Verificar si el archivo existe en la ruta especificada
+if [ -f "$LOG_FILE" ]; then
+    echo "El archivo de log ya existe en $LOG_FILE. Será reemplazado por uno nuevo."
+    rm "$LOG_FILE"  # Eliminar el archivo existente
 fi
-###----VARIABLES---###
-# Asignar los argumentos a variables
-DB_NAME=$1
-DB_USER=$2
-DB_PASSWORD=$3
-DB_TABLE=$4
-
-#Usuario root
-ROOT_USER="root"
-ROOT_PASS="password"
-###----VARIABLES--FIN--###
-
-# Mensaje de confirmación de inicio
-echo "Iniciando configuración de la base de datos de WordPress..."
-echo "Nombre de la base de datos: $DB_NAME"
-echo "Usuario de la base de datos: $DB_USER"
-echo "Contraseña de la base de datos: $DB_PASSWORD"
-echo "Nombre de la tabla $DB_TABLE en la base de datos: $DB_NAME"
-
-# Crear la base de datos
-echo "Creando la base de datos..."
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-
-# Crear el usuario y asignarle permisos
-echo "Creando usuario y asignando permisos..."
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
-
-# Crear tabla en la base de datos
-mysql -u $DB_USER -p"$DB_PASSWORD" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $DB_TABLE (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
+# Crear un nuevo archivo de log y otorgar permisos de escritura
+touch "$LOG_FILE"  # Crea el archivo si no existe o después de eliminar el anterior
+chmod 644 "$LOG_FILE"  # Otorga permisos de lectura y escritura
+# Mensaje de confirmación
+echo "Archivo de log preparado en $LOG_FILE."
+####---LOG--CREACIÓN--FIN---####
 
 ####---FUNCIONES---####
-## Función para verificar si la base de datos ya existe
+log_Regis() {
+  local function_name="$1"
+  local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
+  echo "$timestamp - Función utilizada: $function_name" >> "$LOG_FILE"
+}
+
+# Función para verificar si la base de datos ya existe
 verificar_DB() {
   log_Regis "verificar_DB"
   local DB_NAME=$1
@@ -54,11 +34,10 @@ verificar_DB() {
     verificar_DB "$DB_NAME"  # Llamada recursiva para verificar el nuevo nombre
   fi
 
-  # Retornar el nombre final de la base de datos
-  echo "$DB_NAME"
+  echo "$DB_NAME"  # Retornar el nombre final
 }
 
-## Función para verificar si el usuario ya existe
+# Función para verificar si el usuario ya existe
 verificar_Usuario() {
   log_Regis "verificar_Usuario"
   local DB_USER=$1
@@ -70,11 +49,10 @@ verificar_Usuario() {
     verificar_Usuario "$DB_USER"  # Llamada recursiva para verificar el nuevo nombre
   fi
 
-  # Retornar el nombre final del usuario
-  echo "$DB_USER"
+  echo "$DB_USER"  # Retornar el nombre final
 }
 
-## Función para verificar si la tabla ya existe
+# Función para verificar si la tabla ya existe
 verificar_Tabla() {
   log_Regis "verificar_Tabla"
   local DB_NAME=$1
@@ -87,78 +65,68 @@ verificar_Tabla() {
     verificar_Tabla "$DB_NAME" "$DB_TABLE"  # Llamada recursiva para verificar el nuevo nombre
   fi
 
-  # Retornar el nombre final de la tabla
-  echo "$DB_TABLE"
+  echo "$DB_TABLE"  # Retornar el nombre final
 }
 
-## Función para validar que la longitud esté en el rango de 8 a 64 caracteres
-validar_longitud_regex() {
-  log_Regis "validar_longitud_regex"
+# Función para validar longitud (8-64) y caracteres permitidos (letras, números y _)
+validar_longitud_y_caracteres() {
+  log_Regis "validar_longitud_y_caracteres"
   local input="$1"
-  # si la cadena input NO coincide con ^.{8,64} (logitud de caracteres) se ejecuta el then 
-  if [[ ! "$input" =~ ^.{8,64}$ ]]; then
-    echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres)."
+  if [[ ! "$input" =~ ^[a-zA-Z0-9_]{8,64}$ ]]; then
+    echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres) o contiene caracteres no válidos."
     read -p "INTRODUCE OTRA VEZ: " input
-    validar_longitud_regex "$input"  # Llamada recursiva para verificar el nuevo input
+    validar_longitud_y_caracteres "$input"
   else
     echo "$input"  # Retornar el input válido
   fi
 }
-
-## Función para validar caracteres permitidos: solo letras, números y guión bajo (_)
-validar_caracteres_regex() {
-  log_Regis "validar_caracteres_regex"
-  local input="$1"
-  local allowed_chars_regex='^[a-zA-Z0-9_]+$'
-  # si la cadena input NO coincide con allowed chars se ejecuta el then 
-  if [[ ! "$input" =~ $allowed_chars_regex ]]; then
-    echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
-    echo "Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_)."
-    read -p "INTRODUCE OTRA VEZ: " input
-    validar_caracteres_regex "$input"  # Llamada recursiva para verificar el nuevo input
-  else
-    echo "$input"  # Retornar el input válido
-  fi
-}
-#Registro usando log
-log_Regis() {
-  local function_name="$1"
-  local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
-  echo "$timestamp - Función utilizada: $function_name" >> registro.log
-}
-
 ####---FUNCIONES--FIN--####
 
+# Verificar que se han pasado los cuatro argumentos necesarios
+if [ "$#" -ne 4 ]; then
+    echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
+    
+    read -p "Ingresa el nombre de la DB (a-z, A-Z, 0-9, _): " DB_NAME
+    read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
+    read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
+    read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
+else 
+    #VARIABLES
+    DB_NAME=$1
+    DB_USER=$2
+    USER_PASS=$3
+    TABLE_NAME=$4
+    ###VARIABLES###
+fi
 
-# Muestra los valores validados
-echo "Nombre de la base de datos validado: $DB_NAME"
-echo "Nombre de usuario validado: $DB_USER"
-echo "Contraseña validada: $DB_PASSWORD"
-echo "Nombre de la tabla validado: $DB_TABLE"
+
+# Usuario root y contraseña para MySQL
+ROOT_USER="root"
+ROOT_PASS="password"
 
 ####---USO--DE--FUNCIONES---####
-# Llamar a las funciones para verificar y obtener los nombres finales
+# Validación y ajuste de los valores de entrada
 DB_NAME=$(verificar_DB "$DB_NAME")
 DB_USER=$(verificar_Usuario "$DB_USER")
-DB_TABLE=$(verificar_Tabla "$DB_NAME" "$DB_TABLE")
+TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
-DB_NAME=$(validar_longitud_regex "$DB_NAME")
-DB_USER=$(validar_longitud_regex "$DB_USER")
-DB_PASSWORD=$(validar_longitud_regex "$DB_PASSWORD")
-DB_TABLE=$(validar_longitud_regex "$DB_TABLE")
-
-DB_NAME=$(validar_caracteres_regex "$DB_NAME")
-DB_USER=$(validar_caracteres_regex "$DB_USER")
-DB_PASSWORD=$(validar_caracteres_regex "$DB_PASSWORD")
-DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
+DB_NAME=$(validar_longitud_y_caracteres "$DB_NAME")
+DB_USER=$(validar_longitud_y_caracteres "$DB_USER")
+USER_PASS=$(validar_longitud_y_caracteres "$USER_PASS")
+TABLE_NAME=$(validar_longitud_y_caracteres "$TABLE_NAME")
 ####---USO--DE--FUNCIONES--FIN--####
+
+# Creación de base de datos, usuario y tabla
+echo "Iniciando configuración de la base de datos de WordPress..."
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
+mysql -u $DB_USER -p"$USER_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 
 echo "Base de datos final: $DB_NAME"
 echo "Usuario final: $DB_USER"
-echo "Tabla final: $DB_TABLE"
+echo "Contraseña final: $DB_PASSWORD"
+echo "Tabla final: $TABLE_NAME"
 
-# Confirmación de finalización
-echo "La configuración de la base de datos ha finalizado exitosamente."
-echo "Puedes continuar con la instalación de WordPress."
-
-exit 0
+echo "Configuración completada con éxito."
