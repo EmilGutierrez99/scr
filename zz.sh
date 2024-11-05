@@ -1,10 +1,23 @@
 #!/bin/bash
 
-# Función para registrar el uso de funciones en un log
+# Definir la ruta absoluta del archivo de log
+LOG_FILE="/home/user/registro.log"
+# Verificar si el archivo existe en la ruta especificada
+if [ -f "$LOG_FILE" ]; then
+    echo "El archivo de log ya existe en $LOG_FILE. Será reemplazado por uno nuevo."
+    rm "$LOG_FILE"  # Eliminar el archivo existente
+fi
+# Crear un nuevo archivo de log y otorgar permisos de escritura
+touch "$LOG_FILE"  # Crea el archivo si no existe o después de eliminar el anterior
+chmod 644 "$LOG_FILE"  # Otorga permisos de lectura y escritura
+
+# Mensaje de confirmación
+echo "Archivo de log preparado en $LOG_FILE."
+
 log_Regis() {
   local function_name="$1"
   local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
-  echo "$timestamp - Función utilizada: $function_name" >> registro.log
+  echo "$timestamp - Función utilizada: $function_name" >> "$LOG_FILE"
 }
 
 # Función para verificar si la base de datos ya existe
@@ -74,12 +87,15 @@ if [ "$#" -ne 4 ]; then
     read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
     read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
     read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
-else
+else 
+    #VARIABLES
     DB_NAME=$1
     DB_USER=$2
     USER_PASS=$3
     TABLE_NAME=$4
+    ###VARIABLES###
 fi
+
 
 # Usuario root y contraseña para MySQL
 ROOT_USER="root"
@@ -102,5 +118,9 @@ mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'loc
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
 mysql -u $DB_USER -p"$USER_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
+
+echo "Base de datos final: $DB_NAME"
+echo "Usuario final: $DB_USER"
+echo "Tabla final: $DB_TABLE"
 
 echo "Configuración completada con éxito."
