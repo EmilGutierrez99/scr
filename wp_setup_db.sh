@@ -1,8 +1,9 @@
 #!/bin/bash
 
 ####---LOG--CREACIÓN---####
-# Definir la ruta absoluta del archivo de log
-LOG_FILE="/home/user/registro.log"
+NOMBRE_LOG= "wp_setup_db.log"
+# Definir la ruta absoluta del archivo de log o Path
+LOG_FILE="/home/user/$NOMBRE_LOG"
 # Verificar si el archivo existe en la ruta especificada
 if [ -f "$LOG_FILE" ]; then
     echo "El archivo de log ya existe en $LOG_FILE. Será reemplazado por uno nuevo."
