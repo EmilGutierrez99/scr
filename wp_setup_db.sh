@@ -5,9 +5,6 @@ if [ "$#" -ne 4 ]; then
     echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
     
     read -p "Ingresa el nombre de la DB (a-z, A-Z, 0-9, _): " DB_NAME
-    DB_NAME=$(validate_length_regex "$DB_NAME")
-    DB_NAME=$(validate_allowed_chars "$DB_NAME")
-
     read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
     read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
     read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
@@ -23,6 +20,23 @@ DB_TABLE=$4
 ROOT_USER="root"
 ROOT_PASS="password"
 ###----VARIABLES--FIN--###
+
+####---USO--DE--FUNCIONES---####
+# Llamar a las funciones para verificar y obtener los nombres finales
+DB_NAME=$(verificar_DB "$DB_NAME")
+DB_USER=$(verificar_Usuario "$DB_USER")
+DB_TABLE=$(verificar_Tabla "$DB_NAME" "$DB_TABLE")
+
+DB_NAME=$(validar_longitud_regex "$DB_NAME")
+DB_USER=$(validar_longitud_regex "$DB_USER")
+DB_PASSWORD=$(validar_longitud_regex "$DB_PASSWORD")
+DB_TABLE=$(validar_longitud_regex "$DB_TABLE")
+
+DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+DB_USER=$(validar_caracteres_regex "$DB_USER")
+DB_PASSWORD=$(validar_caracteres_regex "$DB_PASSWORD")
+DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
+####---USO--DE--FUNCIONES--FIN--####
 
 # Mensaje de confirmación de inicio
 echo "Iniciando configuración de la base de datos de WordPress..."
@@ -132,23 +146,6 @@ log_Regis() {
 
 ####---FUNCIONES--FIN--####
 
-####---USO--DE--FUNCIONES---####
-# Llamar a las funciones para verificar y obtener los nombres finales
-DB_NAME=$(verificar_DB "$DB_NAME")
-DB_USER=$(verificar_Usuario "$DB_USER")
-DB_TABLE=$(verificar_Tabla "$DB_NAME" "$DB_TABLE")
-
-DB_NAME=$(validar_longitud_regex "$DB_NAME")
-DB_USER=$(validar_longitud_regex "$DB_USER")
-DB_PASSWORD=$(validar_longitud_regex "$DB_PASSWORD")
-DB_TABLE=$(validar_longitud_regex "$DB_TABLE")
-
-DB_NAME=$(validar_caracteres_regex "$DB_NAME")
-DB_USER=$(validar_caracteres_regex "$DB_USER")
-DB_PASSWORD=$(validar_caracteres_regex "$DB_PASSWORD")
-DB_TABLE=$(validar_caracteres_regex "$DB_TABLE")
-####---USO--DE--FUNCIONES--FIN--####
-
 # Muestra los valores validados
 echo "Nombre de la base de datos validado: $DB_NAME"
 echo "Nombre de usuario validado: $DB_USER"
@@ -164,4 +161,3 @@ echo "Tabla final: $DB_TABLE"
 echo "La configuración de la base de datos ha finalizado exitosamente."
 echo "Puedes continuar con la instalación de WordPress."
 
-exit 0
