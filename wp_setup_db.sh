@@ -8,6 +8,11 @@ if [ "$#" -ne 4 ]; then
     read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
     read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
     read -p "Ingresa el nombre de la nueva Tabla (a-z, A-Z, 0-9, _): " TABLE_NAME
+else
+DB_NAME=$1
+DB_USER=$2
+DB_PASSWORD=$3
+DB_TABLE=$4
 fi
 ###----VARIABLES---###
 # Asignar los argumentos a variables
