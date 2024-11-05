@@ -1,5 +1,5 @@
 #!/bin/bash
-
+######error
 # Verificar que se han pasado los tres argumentos necesarios
 if [ "$#" -ne 4 ]; then
     echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
@@ -14,6 +14,8 @@ else
   DB_PASSWORD=$3
   DB_TABLE=$4
 fi
+
+##############error
 ###----VARIABLES---###
 # Asignar los argumentos a variables
 DB_NAME=$1
