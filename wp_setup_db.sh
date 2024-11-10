@@ -13,7 +13,7 @@ TIEMPO_LOG=$(date "+%Y-%m-%d_%H-%M-%S")
 NOMBRE_LOG= "wp_setup_db.log"
 NOMBRE_FICH_LOG= "$TIEMPO_LOG _$NOMBRE_LOG"
 # Definir la ruta absoluta del archivo de log o Path
-LOG_FILE="/home/user/$NOMBRE_FICH_LOG"
+LOG_FILE="$RUTA_SCRIP/$NOMBRE_FICH_LOG"
 # Verificar si el archivo existe en la ruta especificada
 if [ -f "$LOG_FILE" ]; then
     echo "El archivo de log ya existe en $LOG_FILE. Será reemplazado por uno nuevo."
