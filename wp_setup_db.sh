@@ -1,4 +1,12 @@
 #!/bin/bash
+RUTA_SCRIP= "/home/user/scrip"
+
+if [ -f "$RUTA_SCRIP" ]; then
+    echo "El archivo de log ya existe en $RUTA_SCRIP. Será reemplazado por uno nuevo."
+    rm "$RUTA_SCRIP"  # Eliminar el archivo existente
+fi
+touch "$RUTA_SCRIP"  # Crea el archivo si no existe o después de eliminar el anterior
+chmod 644 "$RUTA_SCRIP"
 
 ####---LOG--CREACIÓN---####
 TIEMPO_LOG=$(date "+%Y-%m-%d_%H-%M-%S")
