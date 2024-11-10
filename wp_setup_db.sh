@@ -1,28 +1,25 @@
 #!/bin/bash
-RUTA_SCRIP= "/home/user/scrip"
+# Definir la ruta del archivo de log
+RUTA_SCRIP="/home/user/scrip"
+mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
 
-if [ -f "$RUTA_SCRIP" ]; then
-    echo "El archivo de log ya existe en $RUTA_SCRIP. Será reemplazado por uno nuevo."
-    rm "$RUTA_SCRIP"  # Eliminar el archivo existente
-fi
-touch "$RUTA_SCRIP"  # Crea el archivo si no existe o después de eliminar el anterior
-chmod 644 "$RUTA_SCRIP"
-
-####---LOG--CREACIÓN---####
+# Definir el nombre del archivo de log con marca de tiempo
 TIEMPO_LOG=$(date "+%Y-%m-%d_%H-%M-%S")
-NOMBRE_LOG= "wp_setup_db.log"
-NOMBRE_FICH_LOG= "$TIEMPO_LOG _$NOMBRE_LOG"
-# Definir la ruta absoluta del archivo de log o Path
+NOMBRE_LOG="wp_setup_db.log"
+NOMBRE_FICH_LOG="${TIEMPO_LOG}_$NOMBRE_LOG"
+
+# Ruta completa del archivo de log
 LOG_FILE="$RUTA_SCRIP/$NOMBRE_FICH_LOG"
-# Verificar si el archivo existe en la ruta especificada
+
+# Verificar si el archivo de log ya existe y eliminarlo si es necesario
 if [ -f "$LOG_FILE" ]; then
     echo "El archivo de log ya existe en $LOG_FILE. Será reemplazado por uno nuevo."
-    rm "$LOG_FILE"  # Eliminar el archivo existente
+    rm "$LOG_FILE"
 fi
-# Crear un nuevo archivo de log y otorgar permisos de escritura
-touch "$LOG_FILE"  # Crea el archivo si no existe o después de eliminar el anterior
-chmod 644 "$LOG_FILE"  # Otorga permisos de lectura y escritura
-# Mensaje de confirmación
+
+# Crear el nuevo archivo de log y definir permisos
+touch "$LOG_FILE"
+chmod 644 "$LOG_FILE"
 echo "Archivo de log preparado en $LOG_FILE."
 ####---LOG--CREACIÓN--FIN---####
 
