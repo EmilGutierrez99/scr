@@ -5,7 +5,7 @@ mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
 
 ####---LOG--CREACIÓN---####
 # Definir el nombre del archivo de log con marca de tiempo
-TIEMPO_LOG=$(date "+%Y-%m-%d_%H-%M-%S")
+TIEMPO_LOG=$(date "+%Y%m%d_%H%M%S")
 NOMBRE_LOG="wp_setup_db.log"
 NOMBRE_FICH_LOG="${TIEMPO_LOG}_$NOMBRE_LOG"
 
