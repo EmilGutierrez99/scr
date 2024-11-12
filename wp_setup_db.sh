@@ -50,7 +50,7 @@ verificar_DB() {
     verificar_DB "$DB_NAME"  # Llamada recursiva con el nuevo nombre
   fi
   
-  echo "$DB_NAME"  # Retorna el nombre de la base de datos válido
+  #echo "$DB_NAME"  # Retorna el nombre de la base de datos válido
 }
 
 # Función para verificar si el usuario ya existe
