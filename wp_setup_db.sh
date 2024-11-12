@@ -40,15 +40,17 @@ log_Regis() {
 verificar_DB() {
   log_Regis "verificar_DB"
   local DB_NAME=$1
-  local db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
+  
+  # Buscar la existencia de la base de datos sin necesidad de conectarse a una en específico
+  local db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES;" | grep "^$DB_NAME$")
 
   if [ "$db_exists" ]; then
-    echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
-    read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
-    verificar_DB "$DB_NAME"  # Llamada recursiva para verificar el nuevo nombre
+    echo "Advertencia: La base de datos '$DB_NAME' ya existe. Por favor, elige otro nombre."
+    read -p "Introduce otro nombre para la base de datos: " DB_NAME
+    verificar_DB "$DB_NAME"  # Llamada recursiva con el nuevo nombre
   fi
-
-  echo "$DB_NAME"  # Retornar el nombre final
+  
+  echo "$DB_NAME"  # Retorna el nombre de la base de datos válido
 }
 
 # Función para verificar si el usuario ya existe
