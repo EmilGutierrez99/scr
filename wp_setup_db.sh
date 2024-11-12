@@ -113,13 +113,11 @@ else
     ###VARIABLES###
 fi
 
-# Creación de base de datos, usuario y tabla
-echo "Iniciando configuración de la base de datos de WordPress..."
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
+    DB_NAME=$1
+    DB_USER=$2
+    USER_PASS=$3
+    TABLE_NAME=$4
+
 
 ####---USO--DE--FUNCIONES---####
 # Validación y ajuste de los valores de entrada
@@ -133,6 +131,13 @@ USER_PASS=$(validar_longitud_y_caracteres "$USER_PASS")
 TABLE_NAME=$(validar_longitud_y_caracteres "$TABLE_NAME")
 ####---USO--DE--FUNCIONES--FIN--####
 
+# Creación de base de datos, usuario y tabla
+echo "Iniciando configuración de la base de datos de WordPress..."
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 
 echo "Base de datos final: $DB_NAME"
 echo "Usuario final: $DB_USER"
