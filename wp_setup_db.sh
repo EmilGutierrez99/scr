@@ -94,8 +94,8 @@ validar_longitud_y_caracteres() {
 
 # Verificar que se han pasado los cuatro argumentos necesarios
 if [ "$#" -ne 4 ]; then
-    echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
-    
+    echo "No Uso Argumentos: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
+    echo "Ingrese manualmente"
     read -p "Ingresa el nombre de la DB (a-z, A-Z, 0-9, _): " DB_NAME
     read -p "Ingresa el nombre del nuevo USER (a-z, A-Z, 0-9, _): " DB_USER
     read -p "Ingresa el Password del nuevo USER (a-z, A-Z, 0-9, _): " USER_PASS
