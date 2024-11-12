@@ -84,16 +84,25 @@ verificar_Tabla() {
   echo "$DB_TABLE"  # Retornar el nombre final
 }
 
-# Función para validar longitud (8-64) y caracteres permitidos (letras, números y _)
-validar_longitud_y_caracteres() {
-  log_Regis "validar_longitud_y_caracteres"
+# Función para validar longitud (8-64) 
+validar_longitud_regex() {
   local input="$1"
-  while [[ ! "$input" =~ ^[a-zA-Z0-9_]{8,64}$ ]]; do
-    echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres) o contiene caracteres no válidos."
+  if [[ ! "$input" =~ ^.{8,64}$ ]]; then
+    echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres)."
     read -p "INTRODUCE OTRA VEZ: " input
-  done
-  
-  echo "$input"  # Retornar el input válido
+    
+  fi
+}
+#Funcion para validar caracteres permitidos (letras, números y _)
+validar_caracteres_regex() {
+  local input="$1"
+  local allowed_chars_regex='^[a-zA-Z0-9_]+$'
+  if [[ ! "$input" =~ $allowed_chars_regex ]]; then
+    echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
+    echo "Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_)."
+    read -p "INTRODUCE OTRA VEZ: " input
+    
+  fi
 }
 ####---FUNCIONES--FIN--####
 
@@ -120,10 +129,18 @@ DB_NAME=$(verificar_DB "$DB_NAME")
 DB_USER=$(verificar_Usuario "$DB_USER")
 TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
-DB_NAME=$(validar_longitud_y_caracteres "$DB_NAME")
-DB_USER=$(validar_longitud_y_caracteres "$DB_USER")
-USER_PASS=$(validar_longitud_y_caracteres "$USER_PASS")
-TABLE_NAME=$(validar_longitud_y_caracteres "$TABLE_NAME")
+DB_NAME=$(validar_longitud_regex "$DB_NAME")
+DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+
+DB_USER=$(validar_longitud_regex "$DB_USER")
+DB_USER=$(validar_caracteres_regex "$DB_USER")
+
+USER_PASS=$(validar_longitud_regex "$USER_PASS")
+USER_PASS=$(validar_caracteres_regex "$USER_PASS")
+
+TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
+TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
+
 ####---USO--DE--FUNCIONES--FIN--####
 
 # Creación de base de datos, usuario y tabla
