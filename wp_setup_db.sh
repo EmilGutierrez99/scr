@@ -136,7 +136,7 @@ mysql -u $DB_USER -p"$USER_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $T
 
 echo "Base de datos final: $DB_NAME"
 echo "Usuario final: $DB_USER"
-echo "Contraseña final: $DB_PASSWORD"
+echo "Contraseña final: $USER_PASS"
 echo "Tabla final: $TABLE_NAME"
 
 echo "Configuración completada con éxito."
