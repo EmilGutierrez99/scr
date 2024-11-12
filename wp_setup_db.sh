@@ -105,7 +105,7 @@ validar_caracteres_regex() {
   fi
 }
 #######--Funcion con Errores-Fin-######
-
+#
 ####---FUNCIONES--FIN--####
 
 # Verificar que se han pasado los cuatro argumentos necesarios
