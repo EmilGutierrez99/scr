@@ -83,7 +83,7 @@ verificar_Tabla() {
 
   echo "$DB_TABLE"  # Retornar el nombre final
 }
-
+#######--Funcion con Errores--######
 # Función para validar longitud (8-64) 
 validar_longitud_regex() {
   local input="$1"
@@ -104,6 +104,8 @@ validar_caracteres_regex() {
     
   fi
 }
+#######--Funcion con Errores-Fin-######
+
 ####---FUNCIONES--FIN--####
 
 # Verificar que se han pasado los cuatro argumentos necesarios
