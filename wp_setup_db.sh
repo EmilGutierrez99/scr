@@ -1,4 +1,8 @@
 #!/bin/bash
+# Usuario root y contraseña para MySQL
+ROOT_USER="root"
+ROOT_PASS="password"
+
 # Definir la ruta del archivo de log
 RUTA_SCRIP="/home/user/scrip"
 mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
@@ -109,10 +113,13 @@ else
     ###VARIABLES###
 fi
 
-
-# Usuario root y contraseña para MySQL
-ROOT_USER="root"
-ROOT_PASS="password"
+# Creación de base de datos, usuario y tabla
+echo "Iniciando configuración de la base de datos de WordPress..."
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 
 ####---USO--DE--FUNCIONES---####
 # Validación y ajuste de los valores de entrada
@@ -126,13 +133,6 @@ USER_PASS=$(validar_longitud_y_caracteres "$USER_PASS")
 TABLE_NAME=$(validar_longitud_y_caracteres "$TABLE_NAME")
 ####---USO--DE--FUNCIONES--FIN--####
 
-# Creación de base de datos, usuario y tabla
-echo "Iniciando configuración de la base de datos de WordPress..."
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 
 echo "Base de datos final: $DB_NAME"
 echo "Usuario final: $DB_USER"
