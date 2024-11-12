@@ -88,13 +88,12 @@ verificar_Tabla() {
 validar_longitud_y_caracteres() {
   log_Regis "validar_longitud_y_caracteres"
   local input="$1"
-  if [[ ! "$input" =~ ^[a-zA-Z0-9_]{8,64}$ ]]; then
+  while [[ ! "$input" =~ ^[a-zA-Z0-9_]{8,64}$ ]]; do
     echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres) o contiene caracteres no válidos."
-    read -p "INTRODUCE OTRA VEZ $input: " input
-    validar_longitud_y_caracteres "$input"
-  else
-    echo "$input"  # Retornar el input válido
-  fi
+    read -p "INTRODUCE OTRA VEZ: " input
+  done
+  
+  echo "$input"  # Retornar el input válido
 }
 ####---FUNCIONES--FIN--####
 
