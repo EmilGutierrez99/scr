@@ -128,9 +128,6 @@ fi
 
 ####---USO--DE--FUNCIONES---####
 # Validación y ajuste de los valores de entrada
-DB_NAME=$(verificar_DB "$DB_NAME")
-DB_USER=$(verificar_Usuario "$DB_USER")
-TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
 DB_NAME=$(validar_longitud_regex "$DB_NAME")
 DB_NAME=$(validar_caracteres_regex "$DB_NAME")
@@ -143,6 +140,10 @@ USER_PASS=$(validar_caracteres_regex "$USER_PASS")
 
 TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
 TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
+
+DB_NAME=$(verificar_DB "$DB_NAME")
+DB_USER=$(verificar_Usuario "$DB_USER")
+TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
 ####---USO--DE--FUNCIONES--FIN--####
 
