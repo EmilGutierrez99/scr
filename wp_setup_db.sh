@@ -129,35 +129,35 @@ fi
 ####---USO--DE--FUNCIONES---####
 # Validación y ajuste de los valores de entrada
 
-validar_longitud_regex "$DB_NAME"
-validar_caracteres_regex "$DB_NAME"
+DB_NAME=$(validar_longitud_regex "$DB_NAME")
+DB_NAME=$(validar_caracteres_regex "$DB_NAME")
 
-validar_longitud_regex "$DB_USER"
-validar_caracteres_regex "$DB_USER"
+DB_USER=$(validar_longitud_regex "$DB_USER")
+DB_USER=$(validar_caracteres_regex "$DB_USER")
 
-validar_longitud_regex "$USER_PASS"
-validar_caracteres_regex "$USER_PASS"
+USER_PASS=$(validar_longitud_regex "$USER_PASS")
+USER_PASS=$(validar_caracteres_regex "$USER_PASS")
 
-validar_longitud_regex "$TABLE_NAME"
-validar_caracteres_regex "$TABLE_NAME"
+TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
+TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
 
-DB_NAME1=$(verificar_DB "$DB_NAME")
-DB_USER1=$(verificar_Usuario "$DB_USER")
-TABLE_NAME1=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
+DB_NAME=$(verificar_DB "$DB_NAME")
+DB_USER=$(verificar_Usuario "$DB_USER")
+TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
 ####---USO--DE--FUNCIONES--FIN--####
 
 # Creación de base de datos, usuario y tabla
 echo "Iniciando configuración de la base de datos de WordPress..."
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME1;"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER1'@'localhost' IDENTIFIED BY '$USER_PASS';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME1.* TO '$DB_USER1'@'localhost';"
-mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME1; CREATE TABLE IF NOT EXISTS $TABLE_NAME1 (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u $ROOT_USER -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
 mysql -u $ROOT_USER -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
 
-echo "Base de datos final: $DB_NAME1"
-echo "Usuario final: $DB_USER1"
+echo "Base de datos final: $DB_NAME"
+echo "Usuario final: $DB_USER"
 echo "Contraseña final: $USER_PASS"
-echo "Tabla final: $TABLE_NAME1"
+echo "Tabla final: $TABLE_NAME"
 
 echo "Configuración completada con éxito."
