@@ -141,9 +141,9 @@ validar_caracteres_regex "$USER_PASS"
 validar_longitud_regex "$TABLE_NAME"
 validar_caracteres_regex "$TABLE_NAME"
 
-verificar_DB "$DB_NAME"
-verificar_Usuario "$DB_USER"
-verificar_Tabla "$DB_NAME" "$TABLE_NAME"
+DB_NAME=$(verificar_DB "$DB_NAME")
+DB_USER=$(verificar_Usuario "$DB_USER")
+TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
 ####---USO--DE--FUNCIONES--FIN--####
 
