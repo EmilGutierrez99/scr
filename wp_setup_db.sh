@@ -47,7 +47,7 @@ verificar_DB() {
 
   # Verificar si la base de datos ya existe
   if [ "$db_exists" ]; then
-    echo "Advertencia: La base de datos '$DB_NAME' ya existe. Por favor, elige otro nombre."
+    echo "Advertencia: La base de datos ya existe. Por favor, elige otro nombre."
     read -p "Introduce otro nombre para la base de datos: " DB_NAME
     verificar_DB "$DB_NAME"  # Llamada recursiva con el nuevo nombre
   fi
@@ -66,7 +66,7 @@ verificar_Usuario() {
 
   # Si el usuario existe, solicitar un nuevo nombre
   if [ "$user_exists" ]; then
-    echo "Advertencia: El usuario '$DB_USER' ya existe. Por favor, elige otro nombre."
+    echo "Advertencia: El usuario ya existe. Por favor, elige otro nombre."
     read -p "Introduce otro nombre para el usuario: " DB_USER
     verificar_Usuario "$DB_USER"  # Llamada recursiva para verificar el nuevo nombre
   fi
