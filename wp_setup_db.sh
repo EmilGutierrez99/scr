@@ -37,40 +37,10 @@ log_Regis() {
 }
 
 # Función para verificar si la base de datos ya existe
-verificar_DB() { 
-  log_Regis "verificar_DB"
-  local DB_NAME=$1
-  
-  # Consulta para verificar si la base de datos existe
-  local db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -se \
-    "SHOW DATABASES LIKE '$DB_NAME';" 2>/dev/null)
 
-  # Verificar si la base de datos ya existe
-  if [ "$db_exists" ]; then
-    echo "Advertencia: La base de datos ya existe. Por favor, elige otro nombre."
-    read -p "Introduce otro nombre para la base de datos: " DB_NAME
-    
-  fi
-}
 
 # Función para verificar si el usuario ya existe
-verificar_Usuario() {
-  log_Regis "verificar_Usuario"
-  local DB_USER=$1
 
-  # Consulta para verificar si el usuario existe
-  local user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -se \
-    "SELECT 1 FROM mysql.user WHERE User = '$DB_USER' LIMIT 1;" 2>/dev/null)
-
-  # Si el usuario existe, solicitar un nuevo nombre
-  if [ "$user_exists" ]; then
-    echo "Advertencia: El usuario ya existe. Por favor, elige otro nombre."
-    read -p "Introduce otro nombre para el usuario: " DB_USER
-    verificar_Usuario "$DB_USER"  # Llamada recursiva para verificar el nuevo nombre
-  fi
-
-  echo "$DB_USER"  # Retornar el nombre final
-}
 
 # Función para verificar si la tabla ya existe
 verificar_Tabla() { 
