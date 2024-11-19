@@ -49,7 +49,7 @@ verificar_DB() {
   if [ "$db_exists" ]; then
     echo "Advertencia: La base de datos ya existe. Por favor, elige otro nombre."
     read -p "Introduce otro nombre para la base de datos: " DB_NAME
-    verificar_DB "$DB_NAME"  # Llamada recursiva con el nuevo nombre
+    
   fi
 
   echo "$DB_NAME"  # Retorna el nombre válido de la base de datos
