@@ -51,8 +51,6 @@ verificar_DB() {
     read -p "Introduce otro nombre para la base de datos: " DB_NAME
     
   fi
-
-  echo "$DB_NAME"  # Retorna el nombre válido de la base de datos
 }
 
 # Función para verificar si el usuario ya existe
@@ -174,8 +172,18 @@ else
 fi
 
 ####---USO--DE--FUNCIONES---####
-DB_NAME=$(verificar_DB "$DB_NAME")
-DB_USER=$(verificar_Usuario "$DB_USER")
+# Verificar si la base de datos ya existe
+db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
+if [ "$db_exists" ]; then
+  echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
+fi
+# Verificar si el usuario ya existe
+user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
+if [ "$user_exists" ]; then
+  echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
+fi
 TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 
 ####---FIN--DE--FUNCIONES---####
