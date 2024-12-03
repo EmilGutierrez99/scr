@@ -36,12 +36,6 @@ log_Regis() {
   echo "$timestamp - Función utilizada: $function_name ......$MENSAJE" >> "$LOG_FILE"
 }
 
-# Función para verificar si la base de datos ya existe
-
-
-# Función para verificar si el usuario ya existe
-
-
 # Función para verificar si la tabla ya existe
 verificar_Tabla() { 
   log_Regis "verificar_Tabla"
@@ -73,12 +67,12 @@ validar_longitud_regex() {
     
   fi
 }
-
+#aqui 
 #Funcion para validar caracteres permitidos (letras, números y _)
 validar_caracteres_regex() { 
 local input="$1"
   local allowed_chars_regex='^[a-zA-Z0-9_]+$'
-  if [[ ! "$input" =~ $allowed_chars_regex ]]; then
+  if [[ "$input" =~ $allowed_chars_regex ]]; then
     echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
     echo "Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_)."
     read -p "INTRODUCE OTRA VEZ: " input
