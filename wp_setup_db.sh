@@ -36,6 +36,8 @@ log_Regis() {
   echo "$timestamp - Función utilizada: $function_name ......$MENSAJE" >> "$LOG_FILE"
 }
 
+
+
 # Función para verificar si la tabla ya existe
 verificar_Tabla() { 
   log_Regis "verificar_Tabla"
@@ -57,28 +59,11 @@ verificar_Tabla() {
   echo "$DB_TABLE"  # Retornar el nombre final de la tabla
 }
 
-#######--Funcion con Errores--######
 # Función para validar longitud (8-64) 
-validar_longitud_regex() { 
- local input="$1"
-  if [[ ! "$input" =~ ^.{8,64}$ ]]; then
-    echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres)."
-    read -p "INTRODUCE OTRA VEZ: " input
-    
-  fi
-}
-#aqui 
+#validar_longitud_regex() 
+
 #Funcion para validar caracteres permitidos (letras, números y _)
-validar_caracteres_regex() { 
-local input="$1"
-  local allowed_chars_regex='^[a-zA-Z0-9_]+$'
-  if [[ "$input" =~ $allowed_chars_regex ]]; then
-    echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
-    echo "Caracteres válidos: letras (a-z, A-Z), números (0-9) y guión bajo (_)."
-    read -p "INTRODUCE OTRA VEZ: " input
-    
-  fi
-}
+#validar_caracteres_regex()
 
 #######--Funcion con Errores-Fin-######
 
@@ -91,26 +76,26 @@ if [ "$#" -ne 4 ]; then
     echo "No se proporcionaron los argumentos necesarios. Por favor, ingréselos manualmente."
     while true; do
         read -p "Ingresa el nombre de la DB (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_NAME
-        DB_NAME=$(validar_longitud_regex "$DB_NAME")
-        DB_NAME=$(validar_caracteres_regex "$DB_NAME")
-        [ -n "$DB_NAME" ] && break
+        #DB_NAME=$(validar_longitud_regex "$DB_NAME")
+        #DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+        #[ -n "$DB_NAME" ] && break
     done
     while true; do
         read -p "Ingresa el nombre del nuevo USER (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_USER
-        DB_USER=$(validar_longitud_regex "$DB_USER")
-        DB_USER=$(validar_caracteres_regex "$DB_USER")
-        [ -n "$DB_USER" ] && break
+        #DB_USER=$(validar_longitud_regex "$DB_USER")
+        #DB_USER=$(validar_caracteres_regex "$DB_USER")
+        #[ -n "$DB_USER" ] && break
     done
     while true; do
         read -p "Ingresa el Password del nuevo USER (8-64 caracteres): " USER_PASS
-        USER_PASS=$(validar_longitud_regex "$USER_PASS")
-        [ -n "$USER_PASS" ] && break
+        #USER_PASS=$(validar_longitud_regex "$USER_PASS")
+        #[ -n "$USER_PASS" ] && break
     done
     while true; do
         read -p "Ingresa el nombre de la nueva Tabla (8-64 caracteres, a-z, A-Z, 0-9, _): " TABLE_NAME
-        TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
-        TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
-        [ -n "$TABLE_NAME" ] && break
+        #TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
+        #TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
+        #[ -n "$TABLE_NAME" ] && break
     done
 else 
     # VARIABLES
@@ -120,13 +105,13 @@ else
     TABLE_NAME=$4
 
     # Validación de entrada de argumentos
-    DB_NAME=$(validar_longitud_regex "$DB_NAME")
-    DB_NAME=$(validar_caracteres_regex "$DB_NAME")
-    DB_USER=$(validar_longitud_regex "$DB_USER")
-    DB_USER=$(validar_caracteres_regex "$DB_USER")
-    USER_PASS=$(validar_longitud_regex "$USER_PASS")
-    TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
-    TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
+    #DB_NAME=$(validar_longitud_regex "$DB_NAME")
+    #DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+    #DB_USER=$(validar_longitud_regex "$DB_USER")
+    #DB_USER=$(validar_caracteres_regex "$DB_USER")
+    #USER_PASS=$(validar_longitud_regex "$USER_PASS")
+    #TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
+    #TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
 fi
 
 ####---USO--DE--FUNCIONES---####
