@@ -65,8 +65,8 @@ verificar_Tabla() {
 
 #######--Funcion con Errores--######
 # Función para validar longitud (8-64) 
-validar_longitud_regex() {
-  local input="$1"
+validar_longitud_regex() { 
+ local input="$1"
   if [[ ! "$input" =~ ^.{8,64}$ ]]; then
     echo "Error: El nombre '$input' no cumple con la longitud permitida (8-64 caracteres)."
     read -p "INTRODUCE OTRA VEZ: " input
@@ -75,8 +75,8 @@ validar_longitud_regex() {
 }
 
 #Funcion para validar caracteres permitidos (letras, números y _)
-validar_caracteres_regex() {
-  local input="$1"
+validar_caracteres_regex() { 
+local input="$1"
   local allowed_chars_regex='^[a-zA-Z0-9_]+$'
   if [[ ! "$input" =~ $allowed_chars_regex ]]; then
     echo "Error: El nombre '$input' contiene caracteres no válidos. Solo se permiten letras, números y guiones bajos (_)."
