@@ -153,29 +153,12 @@ else
     TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
     
 fi
-
+#error sigue creando las variables sin error, debe detenerse cuando una variable tenga un error
 #verif final
 if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$USER_PASS" || -z "$TABLE_NAME" ]]; then
     echo "Error: Una o más variables son inválidas."
     echo "Abortando la ejecución."
-    exit 1
 else 
-    db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
-    if [ "$db_exists" ]; then
-      echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
-      read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
-    fi
-    # Verificar si el usuario ya existe
-    user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
-    if [ "$user_exists" ]; then
-      echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
-      read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
-    fi
-    TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
-
-    ####---FIN--DE--FUNCIONES---####
-
-    # Creación de base de datos, usuario y tabla
     echo "Iniciando configuración de la base de datos de WordPress..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
@@ -189,6 +172,5 @@ else
     echo "Tabla creada: $TABLE_NAME"
 
     echo "Configuración completada con éxito."
-    exit 1
 fi
     
