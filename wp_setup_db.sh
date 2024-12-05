@@ -89,8 +89,6 @@ validar_longitud_regex_des() {
     else
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
-        unset "$input"
-        echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
 }
@@ -104,8 +102,6 @@ validar_caracteres_regex_des() {
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
-        unset "$input"
-        echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
 }
@@ -159,7 +155,11 @@ else
 fi
 
 #verif final
-if [ "$#" -eq 4 ]; then 
+if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$USER_PASS" || -z "$TABLE_NAME" ]]; then
+    echo "Error: Una o más variables son inválidas."
+    echo "Abortando la ejecución."
+    exit 1
+else 
     db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
     if [ "$db_exists" ]; then
       echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
@@ -189,7 +189,6 @@ if [ "$#" -eq 4 ]; then
     echo "Tabla creada: $TABLE_NAME"
 
     echo "Configuración completada con éxito."
-else
-  exit 1
+    exit 1
 fi
     
