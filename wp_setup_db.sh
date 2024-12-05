@@ -90,7 +90,6 @@ validar_longitud_regex_des() {
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
         unset "$input"
-
         echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
@@ -105,10 +104,7 @@ validar_caracteres_regex_des() {
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
-
-        # Eliminar la variable desvinculándola
         unset "$input"
-
         echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
