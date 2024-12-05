@@ -89,6 +89,9 @@ validar_longitud_regex_des() {
     else
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
+        unset "$input"
+
+        echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
 }
@@ -102,6 +105,11 @@ validar_caracteres_regex_des() {
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
+
+        # Eliminar la variable desvinculándola
+        unset "$input"
+
+        echo "La variable '$input' ha sido eliminada."
         exit 1
     fi
 }
@@ -139,38 +147,6 @@ if [ "$#" -ne 4 ]; then
         TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
         [ -n "$TABLE_NAME" ] && break
     done
-    
-    ####---USO--DE--FUNCIONES---####
-    # Verificar si la base de datos ya existe
-    db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
-    if [ "$db_exists" ]; then
-      echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
-      read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
-    fi
-    # Verificar si el usuario ya existe
-    user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
-    if [ "$user_exists" ]; then
-      echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
-      read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
-    fi
-    TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
-
-    ####---FIN--DE--FUNCIONES---####
-
-    # Creación de base de datos, usuario y tabla
-    echo "Iniciando configuración de la base de datos de WordPress..."
-    mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-    mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
-    mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-    mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "USE $DB_NAME; CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));"
-    mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
-
-    echo "Base de datos creada: $DB_NAME"
-    echo "Usuario creado: $DB_USER"
-    echo "Contraseña del usuario: $USER_PASS"
-    echo "Tabla creada: $TABLE_NAME"
-
-    echo "Configuración completada con éxito."
 else 
     # VARIABLES
     DB_NAME=$(validar_longitud_regex_des "$1")
@@ -183,8 +159,11 @@ else
 
     TABLE_NAME=$(validar_longitud_regex_des "$4")
     TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
-    ####---USO--DE--FUNCIONES---####
-    # Verificar si la base de datos ya existe
+    
+fi
+
+
+if [ "$#" -eq 4 ]; then # Verificar si la base de datos ya existe
     db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
     if [ "$db_exists" ]; then
       echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
@@ -214,6 +193,7 @@ else
     echo "Tabla creada: $TABLE_NAME"
 
     echo "Configuración completada con éxito."
-    
+else
+  exit 1
 fi
-
+    
