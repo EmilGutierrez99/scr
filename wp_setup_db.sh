@@ -118,18 +118,20 @@ if [ "$#" -ne 4 ]; then
 else 
     # VARIABLES
     DB_NAME=$1
-    DB_USER=$2
-    USER_PASS=$3
-    TABLE_NAME=$4
-
-    # Validación de entrada de argumentos
     DB_NAME=$(validar_longitud_regex "$DB_NAME")
     DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+
+    DB_USER=$2
     DB_USER=$(validar_longitud_regex "$DB_USER")
     DB_USER=$(validar_caracteres_regex "$DB_USER")
+
+    USER_PASS=$3
     USER_PASS=$(validar_longitud_regex "$USER_PASS")
+
+    TABLE_NAME=$4
     TABLE_NAME=$(validar_longitud_regex "$TABLE_NAME")
     TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
+    
 fi
 
 ####---USO--DE--FUNCIONES---####
