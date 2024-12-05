@@ -162,8 +162,8 @@ else
     
 fi
 
-
-if [ "$#" -eq 4 ]; then # Verificar si la base de datos ya existe
+#verif final
+if [ "$#" -eq 4 ]; then 
     db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
     if [ "$db_exists" ]; then
       echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
