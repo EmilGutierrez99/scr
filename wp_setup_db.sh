@@ -141,19 +141,15 @@ if [ "$#" -ne 4 ]; then
     done
 else 
     # VARIABLES
-    DB_NAME=$1
-    DB_NAME=$(validar_longitud_regex_des "$DB_NAME")
+    DB_NAME=$(validar_longitud_regex_des "$1")
     DB_NAME=$(validar_caracteres_regex_des "$DB_NAME")
 
-    DB_USER=$2
-    DB_USER=$(validar_longitud_regex_des "$DB_USER")
+    DB_USER=$(validar_longitud_regex_des "$2")
     DB_USER=$(validar_caracteres_regex_des "$DB_USER")
 
-    USER_PASS=$3
-    USER_PASS=$(validar_longitud_regex_des "$USER_PASS")
+    USER_PASS=$(validar_longitud_regex_des "$3")
 
-    TABLE_NAME=$4
-    TABLE_NAME=$(validar_longitud_regex_des "$TABLE_NAME")
+    TABLE_NAME=$(validar_longitud_regex_des "$4")
     TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
     
 fi
