@@ -172,6 +172,22 @@ TABLE_NAME=$(verificar_Tabla "$DB_NAME" "$TABLE_NAME")
 ####---FIN--DE--FUNCIONES---####
 
 # Creación de base de datos, usuario y tabla
+# Verificar si las variables están definidas y no vacías
+if [[ -z "$ROOT_USER" || -z "$ROOT_PASS" || -z "$DB_NAME" || -z "$DB_USER" || -z "$USER_PASS" || -z "$TABLE_NAME" ]]; then
+    echo "Error: Una o más variables están vacías o no definidas."
+    echo "Abortando la ejecución."
+    exit 1
+fi
+
+# Verificar conexión a MySQL
+mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT 1;" &> /dev/null
+if [[ $? -ne 0 ]]; then
+    echo "Error: No se pudo conectar a MySQL con las credenciales proporcionadas."
+    echo "Abortando la ejecución."
+    exit 1
+fi
+
+# Código principal: Creación de base de datos, usuario y tabla
 echo "Iniciando configuración de la base de datos de WordPress..."
 mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
 mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
@@ -183,5 +199,3 @@ echo "Base de datos creada: $DB_NAME"
 echo "Usuario creado: $DB_USER"
 echo "Contraseña del usuario: $USER_PASS"
 echo "Tabla creada: $TABLE_NAME"
-
-echo "Configuración completada con éxito."
