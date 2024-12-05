@@ -89,6 +89,7 @@ validar_longitud_regex_des() {
     else
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
+        exit 1
     fi
 }
 
@@ -101,6 +102,7 @@ validar_caracteres_regex_des() {
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
+        exit 1
     fi
 }
 
