@@ -140,55 +140,36 @@ if [ "$#" -ne 4 ]; then
         [ -n "$TABLE_NAME" ] && break
     done
 else 
-    # VALIDAR DB_NAME
+    # VARIABLES
     DB_NAME=$1
-    DB_NAME=$(validar_caracteres_regex_des "$DB_NAME")
-    if [ -z "$DB_NAME" ]; then
-        echo "Error: El nombre de la base de datos contiene caracteres inválidos. Deteniendo el script."
-        exit 1
-    fi
-    DB_NAME=$(validar_longitud_regex_des "$DB_NAME")
-    if [ -z "$DB_NAME" ]; then
-        echo "Error: El nombre de la base de datos no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
-        exit 1
-    fi
-
-    # VALIDAR DB_USER
     DB_USER=$2
-    DB_USER=$(validar_caracteres_regex_des "$DB_USER")
-    if [ -z "$DB_USER" ]; then
-        echo "Error: El nombre del usuario contiene caracteres inválidos. Deteniendo el script."
-        exit 1
-    fi
-    DB_USER=$(validar_longitud_regex_des "$DB_USER")
-    if [ -z "$DB_USER" ]; then
-        echo "Error: El nombre del usuario no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
-        exit 1
-    fi
-
-    # VALIDAR USER_PASS
     USER_PASS=$3
-    if [ -z "$USER_PASS" ]; then
-        echo "Error: La contraseña del usuario está vacía o no es válida. Deteniendo el script."
-        exit 1
-    fi
-
-    # VALIDAR TABLE_NAME
     TABLE_NAME=$4
-    TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
-    if [ -z "$TABLE_NAME" ]; then
-        echo "Error: El nombre de la tabla contiene caracteres inválidos. Deteniendo el script."
-        exit 1
-    fi
-    TABLE_NAME=$(validar_longitud_regex_des "$TABLE_NAME")
-    if [ -z "$TABLE_NAME" ]; then
-        echo "Error: El nombre de la tabla no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
-        exit 1
-    fi
 
+    DB_NAME=$(validar_caracteres_regex_des "$DB_NAME")
+    DB_NAME=$(validar_longitud_regex_des "$DB_NAME")
+    DB_USER=$(validar_caracteres_regex_des "$DB_USER")
+    DB_USER=$(validar_longitud_regex_des "$DB_USER")
+    TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
+    TABLE_NAME=$(validar_longitud_regex_des "$TABLE_NAME")
     
 fi
 
+
+    
+
+db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
+if [ "$db_exists" ]; then
+  echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
+fi
+
+# Verificar si el usuario ya existe
+user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
+if [ "$user_exists" ]; then
+  echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
+  read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
+fi
 
     echo "Iniciando configuración de la base de datos de WordPress..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
