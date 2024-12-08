@@ -158,6 +158,7 @@ fi
 if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$USER_PASS" || -z "$TABLE_NAME" ]]; then
     echo "Error: Una o más variables son inválidas."
     echo "Abortando la ejecución."
+    exit 1
 else 
     echo "Iniciando configuración de la base de datos de WordPress..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
