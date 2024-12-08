@@ -140,26 +140,56 @@ if [ "$#" -ne 4 ]; then
         [ -n "$TABLE_NAME" ] && break
     done
 else 
-    # VARIABLES
-    DB_NAME=$(validar_longitud_regex_des "$1")
+    # VALIDAR DB_NAME
+    DB_NAME=$1
     DB_NAME=$(validar_caracteres_regex_des "$DB_NAME")
+    if [ -z "$DB_NAME" ]; then
+        echo "Error: El nombre de la base de datos contiene caracteres inválidos. Deteniendo el script."
+        exit 1
+    fi
+    DB_NAME=$(validar_longitud_regex_des "$DB_NAME")
+    if [ -z "$DB_NAME" ]; then
+        echo "Error: El nombre de la base de datos no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
+        exit 1
+    fi
 
-    DB_USER=$(validar_longitud_regex_des "$2")
+    # VALIDAR DB_USER
+    DB_USER=$2
     DB_USER=$(validar_caracteres_regex_des "$DB_USER")
+    if [ -z "$DB_USER" ]; then
+        echo "Error: El nombre del usuario contiene caracteres inválidos. Deteniendo el script."
+        exit 1
+    fi
+    DB_USER=$(validar_longitud_regex_des "$DB_USER")
+    if [ -z "$DB_USER" ]; then
+        echo "Error: El nombre del usuario no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
+        exit 1
+    fi
 
-    USER_PASS=$(validar_longitud_regex_des "$3")
+    # VALIDAR USER_PASS
+    USER_PASS=$3
+    if [ -z "$USER_PASS" ]; then
+        echo "Error: La contraseña del usuario está vacía o no es válida. Deteniendo el script."
+        exit 1
+    fi
 
-    TABLE_NAME=$(validar_longitud_regex_des "$4")
+    # VALIDAR TABLE_NAME
+    TABLE_NAME=$4
     TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
+    if [ -z "$TABLE_NAME" ]; then
+        echo "Error: El nombre de la tabla contiene caracteres inválidos. Deteniendo el script."
+        exit 1
+    fi
+    TABLE_NAME=$(validar_longitud_regex_des "$TABLE_NAME")
+    if [ -z "$TABLE_NAME" ]; then
+        echo "Error: El nombre de la tabla no cumple con la longitud requerida (8-64 caracteres). Deteniendo el script."
+        exit 1
+    fi
+
     
 fi
-#error sigue creando las variables sin error, debe detenerse cuando una variable tenga un error
-#verif final
-if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$USER_PASS" || -z "$TABLE_NAME" ]]; then
-    echo "Error: Una o más variables son inválidas."
-    echo "Abortando la ejecución."
-    exit 1
-else 
+
+
     echo "Iniciando configuración de la base de datos de WordPress..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$USER_PASS';"
@@ -173,5 +203,5 @@ else
     echo "Tabla creada: $TABLE_NAME"
 
     echo "Configuración completada con éxito."
-fi
+
     
