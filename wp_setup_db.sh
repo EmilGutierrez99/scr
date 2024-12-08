@@ -146,12 +146,12 @@ else
     USER_PASS=$3
     TABLE_NAME=$4
 
-    DB_NAME=$(validar_caracteres_regex_des "$DB_NAME")
-    DB_NAME=$(validar_longitud_regex_des "$DB_NAME")
-    DB_USER=$(validar_caracteres_regex_des "$DB_USER")
-    DB_USER=$(validar_longitud_regex_des "$DB_USER")
-    TABLE_NAME=$(validar_caracteres_regex_des "$TABLE_NAME")
-    TABLE_NAME=$(validar_longitud_regex_des "$TABLE_NAME")
+    validar_caracteres_regex_des "$DB_NAME"
+    validar_longitud_regex_des "$DB_NAME"
+    validar_caracteres_regex_des "$DB_USER"
+    validar_longitud_regex_des "$DB_USER"
+    validar_caracteres_regex_des "$TABLE_NAME"
+    validar_longitud_regex_des "$TABLE_NAME"
     
 fi
 
