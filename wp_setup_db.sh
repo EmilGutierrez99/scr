@@ -61,6 +61,7 @@ verificar_Tabla() {
 
 # Función para validar longitud (8-64) 
 validar_longitud_regex() {
+    log_Regis "validar_longitud_regex"
     local input="$1"
     if [[ ${#input} -ge 8 && ${#input} -le 64 ]]; then
         echo "$input"
@@ -73,6 +74,7 @@ validar_longitud_regex() {
 
 #Funcion para validar caracteres permitidos (letras, números y _)
 validar_caracteres_regex() {
+    log_Regis "validar_caracteres_regex"
     local input="$1"
     if [[ "$input" =~ ^[a-zA-Z0-9_]+$ ]]; then
         echo "$input"
@@ -83,12 +85,14 @@ validar_caracteres_regex() {
 }
 
 validar_longitud_regex_des() {
+    log_Regis "validar_longitud_regex_des"
     local input="$1"
     if [[ ${#input} -ge 8 && ${#input} -le 64 ]]; then
         echo "$input"
     else
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
+        log_Regis "Error en validar_longitud_regex_des de "$input""
         exit 1
     fi
 }
@@ -96,16 +100,84 @@ validar_longitud_regex_des() {
 
 #Funcion para validar caracteres permitidos (letras, números y _)
 validar_caracteres_regex_des() {
+    log_Regis "validar_caracteres_regex_des"
     local input="$1"
     if [[ "$input" =~ ^[a-zA-Z0-9_]+$ ]]; then
         echo "$input"
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
+        log_Regis "Error en validar_caracteres_regex_des de "$input""
         exit 1
     fi
 }
 
+verificar_database_exists() {
+  local db_name=$1
+  
+  # Verificar si la base de datos existe usando las variables globales ROOT_USER y ROOT_PASS
+  local db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name")
+  
+  # Si la base de datos existe, solicita un nuevo nombre
+  while [ "$db_exists" ]; do
+    echo "Advertencia: La base de datos '$db_name' ya existe. Por favor, elige otro nombre."
+    read -p "INTRODUCE OTRO NOMBRE A LA DB: " db_name
+    db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name")
+  done
+
+  echo "La base de datos '$db_name' no existe. Puedes usar este nombre."
+  echo "$db_name" # Devuelve el nombre final
+}
+
+verificar_user_exists() {
+  local db_user=$1
+
+  # Verificar si el usuario existe usando las variables globales ROOT_USER y ROOT_PASS
+  local user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
+
+  # Si el usuario existe, solicita un nuevo nombre
+  while [ "$user_exists" ]; do
+    echo "Advertencia: El usuario '$db_user' ya existe. Por favor, elige otro nombre."
+    read -p "INTRODUCE OTRO NOMBRE AL USER: " db_user
+    user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
+  done
+
+  echo "El usuario '$db_user' no existe. Puedes usar este nombre."
+  echo "$db_user" # Devuelve el nombre final
+}
+
+
+verificar_database_exists_des() {
+  local db_name=$1
+  
+  # Verificar si la base de datos existe usando las variables globales ROOT_USER y ROOT_PASS
+  local db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name")
+  
+  # Si la base de datos existe, solicita un nuevo nombre
+  while [ "$db_exists" ]; do
+    echo "Advertencia: La base de datos '$db_name' ya existe. Por favor, elige otro nombre."
+    exit 1
+  done
+
+  echo "La base de datos '$db_name' no existe. Puedes usar este nombre."
+  echo "$db_name" # Devuelve el nombre final
+}
+
+verificar_user_exists_des() {
+  local db_user=$1
+
+  # Verificar si el usuario existe usando las variables globales ROOT_USER y ROOT_PASS
+  local user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
+
+  # Si el usuario existe, solicita un nuevo nombre
+  while [ "$user_exists" ]; do
+    echo "Advertencia: El usuario '$db_user' ya existe. Por favor, elige otro nombre."
+    exit 1
+  done
+
+  echo "El usuario '$db_user' no existe. Puedes usar este nombre."
+  echo "$db_user" # Devuelve el nombre final
+}
 
 #######--Funcion con Errores-Fin-######
 
@@ -120,12 +192,14 @@ if [ "$#" -ne 4 ]; then
         read -p "Ingresa el nombre de la DB (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_NAME
         DB_NAME=$(validar_longitud_regex "$DB_NAME")
         DB_NAME=$(validar_caracteres_regex "$DB_NAME")
+        DB_NAME=$(verificar_database_exists "$DB_NAME")
         [ -n "$DB_NAME" ] && break
     done
     while true; do
         read -p "Ingresa el nombre del nuevo USER (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_USER
         DB_USER=$(validar_longitud_regex "$DB_USER")
         DB_USER=$(validar_caracteres_regex "$DB_USER")
+        DB_USER=$(verificar_user_exists "$DB_USER")
         [ -n "$DB_USER" ] && break
     done
     while true; do
@@ -139,6 +213,8 @@ if [ "$#" -ne 4 ]; then
         TABLE_NAME=$(validar_caracteres_regex "$TABLE_NAME")
         [ -n "$TABLE_NAME" ] && break
     done
+    
+    
 else 
     # VARIABLES
     DB_NAME=$1
@@ -148,27 +224,15 @@ else
 
     validar_caracteres_regex_des "$DB_NAME"
     validar_longitud_regex_des "$DB_NAME"
+    verificar_database_exists_des "$DB_NAME"
+
     validar_caracteres_regex_des "$DB_USER"
     validar_longitud_regex_des "$DB_USER"
+    verificar_user_exists_des "$DB_USER"
+
     validar_caracteres_regex_des "$TABLE_NAME"
     validar_longitud_regex_des "$TABLE_NAME"
     
-fi
-
-
-    
-
-db_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$DB_NAME';" | grep "$DB_NAME")
-if [ "$db_exists" ]; then
-  echo "Advertencia: La base de datos $DB_NAME ya existe. Por favor, elige otro nombre."
-  read -p "INTRODUCE OTRO NOMBRE A LA DB: " DB_NAME
-fi
-
-# Verificar si el usuario ya existe
-user_exists=$(mysql -u $ROOT_USER -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$DB_USER';" | grep "$DB_USER")
-if [ "$user_exists" ]; then
-  echo "Advertencia: El usuario $DB_USER ya existe. Por favor, elige otro nombre."
-  read -p "INTRODUCE OTRO NOMBRE AL USER: " DB_USER
 fi
 
     echo "Iniciando configuración de la base de datos de WordPress..."
