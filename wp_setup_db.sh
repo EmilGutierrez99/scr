@@ -11,7 +11,7 @@ mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
 TIEMPO_LOG=$(date "+%Y%m%d_%H%M%S")
 NOMBRE_LOG="wp_setup_db.log"
 NOMBRE_FICH_LOG="${TIEMPO_LOG}_$NOMBRE_LOG"
-MENSAJE="CORRECTO"
+
 # Ruta completa del archivo de log
 LOG_FILE="$RUTA_SCRIP/$NOMBRE_FICH_LOG"
 # Verificar si el archivo de log ya existe y eliminarlo si es necesario
@@ -29,7 +29,7 @@ echo "Archivo de log preparado en $LOG_FILE."
 log_Regis() {
   local function_name="$1"
   local timestamp=$(date "+%H-%M-%S-%d-%m-%Y")
-  echo "$timestamp - Función utilizada: $function_name ......$MENSAJE" >> "$LOG_FILE"
+  echo "$timestamp - Función utilizada: $function_name ......" >> "$LOG_FILE"
 }
 
 # Función para verificar si la tabla ya existe
