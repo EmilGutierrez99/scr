@@ -51,28 +51,6 @@ verificar_Tabla() {
   echo "$DB_TABLE"  
 }
 
-validar_longitud_regex() {
-    log_Regis "validar_longitud_regex"
-    local input="$1"
-    if [[ ${#input} -ge 8 && ${#input} -le 64 ]]; then
-        echo "$input"
-    else
-        echo "Error: La longitud debe estar entre 8 y 64 caracteres." >&2
-        echo ""
-    fi
-}
-
-validar_caracteres_regex() {
-    log_Regis "validar_caracteres_regex"
-    local input="$1"
-    if [[ "$input" =~ ^[a-zA-Z0-9_]+$ ]]; then
-        echo "$input"
-    else
-        echo "Error: Solo se permiten letras, números y guiones bajos (_)." >&2
-        echo ""
-    fi
-}
-
 validar_longitud_regex_des() {
     log_Regis "validar_longitud_regex_des"
     local input="$1"
@@ -156,8 +134,9 @@ verificar_user_exists_des() {
 ####---FUNCIONES--FIN--##
 # Verificar que se han pasado los cuatro argumentos necesarios 
 if [ "$#" -ne 4 ]; then
-    echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
+    echo "Uso: ./wp_setup_db.sh"
     echo "No se proporcionaron los argumentos necesarios. Por favor, ingréselos"
+    echo "Ejemplo: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
     echo "Se cancelo la operación"
     exit 1
     
