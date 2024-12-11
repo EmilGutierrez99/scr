@@ -157,24 +157,10 @@ verificar_user_exists_des() {
 # Verificar que se han pasado los cuatro argumentos necesarios 
 if [ "$#" -ne 4 ]; then
     echo "Uso: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
-    echo "No se proporcionaron los argumentos necesarios. Por favor, ingréselos manualmente."
-        read -p "Ingresa el nombre de la DB (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_NAME
-        validar_longitud_regex "$DB_NAME"
-        validar_caracteres_regex "$DB_NAME"
-        verificar_database_exists "$DB_NAME"
+    echo "No se proporcionaron los argumentos necesarios. Por favor, ingréselos"
+    echo "Se cancelo la operación"
+    exit 1
     
-        read -p "Ingresa el nombre del nuevo USER (8-64 caracteres, a-z, A-Z, 0-9, _): " DB_USER
-        validar_longitud_regex "$DB_USER"
-        validar_caracteres_regex "$DB_USER"
-        verificar_user_exists "$DB_USER"
-      
-        read -p "Ingresa el Password del nuevo USER (8-64 caracteres): " USER_PASS
-        validar_longitud_regex "$USER_PASS"
-  
-        read -p "Ingresa el nombre de la nueva Tabla (8-64 caracteres, a-z, A-Z, 0-9, _): " TABLE_NAME
-        validar_longitud_regex "$TABLE_NAME"
-        validar_caracteres_regex "$TABLE_NAME"
-          
 else 
     # VARIABLES
     DB_NAME=$1
