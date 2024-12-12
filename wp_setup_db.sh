@@ -118,6 +118,7 @@ if [ "$#" -ne 4 ]; then
     echo "No se proporcionaron los argumentos necesarios. Por favor ingréselos"
     echo "Ejemplo: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
     echo "Se cancelo la operación"
+    log_Regis "No se proporcionaron los argumentos necesarios, Se cancelo la operación"
     exit 1
     
 else 
