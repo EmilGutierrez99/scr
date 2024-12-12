@@ -48,7 +48,8 @@ verificar_Tabla() {
       break  # Salir del bucle si no existe
     fi
   done
-  echo "$DB_TABLE"  
+  echo "$DB_TABLE"
+  log_Regis "verificar_Tabla en "$DB_NAME" Correcto"  
 }
 
 validar_longitud_regex_des() {
@@ -59,9 +60,10 @@ validar_longitud_regex_des() {
     else
         echo "Error: La longitud debe estar entre 8 y 64 caracteres."
         echo "no se puede ejecutar"
-        log_Regis "Error en validar_longitud_regex_des de "$input""
+        log_Regis "Error en validar_longitud_regex_des de: "$input""
         exit 1
     fi
+    log_Regis "validar_longitud_regex_des en "$input" Correcto"
 }
 
 #Funcion para validar caracteres permitidos (letras, números y _)
@@ -73,69 +75,47 @@ validar_caracteres_regex_des() {
     else
         echo "Error: Solo se permiten letras, números y guiones bajos (_)."
         echo "no se puede ejecutar"
-        log_Regis "Error en validar_caracteres_regex_des de "$input""
+        log_Regis "Error en validar_caracteres_regex_des de: "$input""
         exit 1
     fi
-}
-
-verificar_database_exists() {
-  local db_name=$1  
-  # Verificar si la base de datos existe usando las variables globales ROOT_USER y ROOT_PASS
-  local db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name") 
-  # Si la base de datos existe, solicita un nuevo nombre
-  while [ "$db_exists" ]; do
-    echo "Advertencia: La base de datos '$db_name' ya existe. Por favor, elige otro nombre."
-    read -p "INTRODUCE OTRO NOMBRE A LA DB: " db_name
-    db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name")
-  done
-  echo "La base de datos '$db_name' no existe. Puedes usar este nombre."
-  echo "$db_name" # Devuelve el nombre final
-}
-
-verificar_user_exists() {
-  local db_user=$1
-  # Verificar si el usuario existe usando las variables globales ROOT_USER y ROOT_PASS
-  local user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
-  # Si el usuario existe, solicita un nuevo nombre
-  while [ "$user_exists" ]; do
-    echo "Advertencia: El usuario '$db_user' ya existe. Por favor, elige otro nombre."
-    read -p "INTRODUCE OTRO NOMBRE AL USER: " db_user
-    user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
-  done
-  echo "El usuario '$db_user' no existe. Puedes usar este nombre."
-  echo "$db_user" # Devuelve el nombre final
+    log_Regis "validar_caracteres_regex_des en "$input" Correcto"
 }
 
 verificar_database_exists_des() {
+  log_Regis "verificar_database_exists"
   local db_name=$1 
   # Verificar si la base de datos existe usando las variables globales ROOT_USER y ROOT_PASS
   local db_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW DATABASES LIKE '$db_name';" | grep "$db_name") 
   # Si la base de datos existe, solicita un nuevo nombre
   while [ "$db_exists" ]; do
     echo "Advertencia: La base de datos '$db_name' ya existe. Por favor, elige otro nombre."
+    log_Regis "Error en verificar_database_exists de: "$db_name""
     exit 1
   done
-  echo "La base de datos '$db_name' no existe. Puedes usar este nombre."
   echo "$db_name" # Devuelve el nombre final
+  log_Regis "verificar_database_exists_des en "$db_name" Correcto"
 }
 
 verificar_user_exists_des() {
+  log_Regis "verificar_user_exists" 
   local db_user=$1
   # Verificar si el usuario existe usando las variables globales ROOT_USER y ROOT_PASS
   local user_exists=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SELECT User FROM mysql.user WHERE User = '$db_user';" | grep "$db_user")
   # Si el usuario existe, solicita un nuevo nombre
   while [ "$user_exists" ]; do
     echo "Advertencia: El usuario '$db_user' ya existe. Por favor, elige otro nombre."
+    log_Regis "Error en verificar_user_exists de: "$db_user"" 
     exit 1
   done
-  echo "El usuario '$db_user' no existe. Puedes usar este nombre."
   echo "$db_user" # Devuelve el nombre final
+  log_Regis "verificar_user_exists_des en "$db_user" Correcto"
 }
 ####---FUNCIONES--FIN--##
+
 # Verificar que se han pasado los cuatro argumentos necesarios 
 if [ "$#" -ne 4 ]; then
     echo "Uso: ./wp_setup_db.sh"
-    echo "No se proporcionaron los argumentos necesarios. Por favor, ingréselos"
+    echo "No se proporcionaron los argumentos necesarios. Por favor ingréselos"
     echo "Ejemplo: ./wp_setup_db.sh <nombre_db> <usuario_db> <contraseña_db> <tabla_db>"
     echo "Se cancelo la operación"
     exit 1
