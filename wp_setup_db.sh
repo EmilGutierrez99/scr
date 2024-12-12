@@ -92,7 +92,6 @@ verificar_database_exists_des() {
     log_Regis "Error en verificar_database_exists de: "$db_name""
     exit 1
   done
-  echo "$db_name" # Devuelve el nombre final
   log_Regis "verificar_database_exists_des en "$db_name" Correcto"
 }
 
@@ -107,7 +106,6 @@ verificar_user_exists_des() {
     log_Regis "Error en verificar_user_exists de: "$db_user"" 
     exit 1
   done
-  echo "$db_user" # Devuelve el nombre final
   log_Regis "verificar_user_exists_des en "$db_user" Correcto"
 }
 ####---FUNCIONES--FIN--##
