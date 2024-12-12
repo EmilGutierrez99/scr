@@ -145,5 +145,6 @@ fi
     echo "Contraseña del usuario: $USER_PASS"
     echo "Tabla creada: $TABLE_NAME"
     echo "Configuración completada con éxito."
+    log_Regis "Ejecucion Exitosa"
 
     
