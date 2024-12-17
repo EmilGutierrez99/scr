@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR_USER="/home/user/scr"
+DIR_USER="/home/emil/wp-scripts"
 
 cd $DIR_USER/
 sudo chmod +x mysql_installer.sh
