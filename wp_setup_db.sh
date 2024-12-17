@@ -1,7 +1,9 @@
 #!/bin/bash
+read -p "Ingresa usuario (root,etc) a utilizar: " ROOT_USER
+read -p "Ingresa la contraseña: " ROOT_PASS
 # Usuario root y contraseña para MySQL
-ROOT_USER="root"
-ROOT_PASS="password"
+$ROOT_USER
+$ROOT_PASS
 # Definir la ruta del archivo de log
 RUTA_SCRIP="/home/user/scrip"
 mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
