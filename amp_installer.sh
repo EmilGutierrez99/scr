@@ -14,4 +14,4 @@ cd $DIR_USER/
 sudo chmod +x php_installer.sh
 ./php_installer.sh
 
-
+echo "Se instalo correctamente mysql, apache y php"
