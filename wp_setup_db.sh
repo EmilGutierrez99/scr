@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Definir la ruta del archivo de log
-RUTA_SCRIP="/home/user/scrip"
+RUTA_SCRIP="/home/scrips/logs"
 mkdir -p "$RUTA_SCRIP"  # Crear el directorio si no existe
 
 ####---LOG--CREACIÓN---####
@@ -125,9 +125,7 @@ else
     TABLE_NAME=$4
     read -p "Ingresa usuario (root,etc) a utilizar: " ROOT_USER
     read -p "Ingresa la contraseña: " ROOT_PASS
-    # Usuario root y contraseña para MySQL
-    $ROOT_USER
-    $ROOT_PASS
+   
     validar_caracteres_regex_des "$DB_NAME"
     validar_longitud_regex_des "$DB_NAME"
     verificar_database_exists_des "$DB_NAME"
